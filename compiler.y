@@ -18,6 +18,9 @@ extern int yylineno;
 %token ASSIGN SEMI COMMA 
 %token LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE 
 %token NUM ID
+%token ERROR
+/* reserved words */
+%token ELSE IF INT RETURN VOID WHILE OUTPUT INPUT
 
 /* Specify operator precedence and associativity */
 %left PLUS
