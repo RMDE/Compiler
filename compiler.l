@@ -14,34 +14,39 @@ identifier  [a-zA-Z_][a-zA-Z_0-9]*
 newline     \n
 whitespace  [ \t]+
 
+/*deleted:                                 */
+/*"bool"                    {return BOOL;}*/
+/*"char"                    {return CHAR;}*/
+/*"short"                   {return SHORT;}*/
+/*"float"                   {return FLOAT;}*/
+/*"double"                  {return DOUBLE;}*/
+/*"long long int"           {return LONG_INT;}*/
+/*"unsigned int"            {return UINT;}*/
+/*"enum"                    {return ENUM;}*/
+/*"union"                   {return UNION;}*/
+/*"struct"                  {return STRUCT;}*/
+/* "class"                  {return CLASS;} */
+/*"for"                     {return FOR;}*/
+/*"break"                   {return BREAK;}*/
+/*"continue"                {return CONTINUE;}*/
+/*"case"                    {return CASE;}*/
+/*"switch"                  {return SWITCH;}*/
+/*"^"                       {return POW;}*/
+/*("pi")|("PI")							{return PI;}*/
+/*("mod")|("MOD")						{return MOD;}*/
 %option noyywrap
 %%
 
 
-"void"                    {return VOID;}
-"char"                    {return CHAR;}
-"short"                   {return SHORT;}
+"void"                    {return VOID;} //variable's type
 "int"                     {return INT;}
-"float"                   {return FLOAT;}
-"double"                  {return DOUBLE;}
-"long long int"           {return LONG_INT;}
-"unsigned int"            {return UINT;}
-"enum"                    {return ENUM;}
-"union"                   {return UNION;}
-"struct"                  {return STRUCT;}
-"class"                   {return CLASS;}
 {identifier}"["{number}"]" {return ARRAY;}
 
 
 
-"else"          {return ELSE;}
+"else"          {return ELSE;} //assign
 "if"            {return IF;}
 "while"         {return WHILE;}
-"for"           {return FOR;}
-"break"         {return BREAK;}
-"continue"      {return CONTINUE;}
-"case"          {return CASE;}
-"switch"        {return SWITCH;}
 "return"        {return RETURN;}
 
 "output"        {return OUTPUT;}
@@ -53,7 +58,6 @@ whitespace  [ \t]+
 "-"             {return MINUS;}
 "*"             {return TIMES;}
 "/"             {return OVER;}
-"^"             {return POW;}
 "<"             {return LT;}
 "<="            {return LTEQ;}
 ">"             {return GT;}
@@ -73,8 +77,7 @@ whitespace  [ \t]+
 {identifier}    {return ID;}
 {newline}       {lineno++;}
 {whitespace}    {/* skip whitespace */}
-("pi")|("PI")													{return PI;}
-("mod")|("MOD")												{return MOD;}
+
 
 
 "/*"             { char c;
