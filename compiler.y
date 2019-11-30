@@ -13,7 +13,11 @@ extern int yylineno;
 %}
 
 /* Declare tokens */
-%token ADD MUL NEG NUMBER PAR_LEFT PAR_RIGHT EOL POW
+%token PLUS MINUS TIMES OVER 
+%token LT LTEQ GT GTEQ EQ NEQ
+%token ASSIGN SEMI COMMA 
+%token LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE 
+%token NUM ID
 
 /* Specify operator precedence and associativity */
 %left ADD
