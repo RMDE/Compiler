@@ -11,10 +11,10 @@ CFLAGS = -Wall -g
 
 OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o code.o cgen.o
 
-cminus: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o cminus
+compiler: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o compiler
 
-main.o: main.c globals.h util.h scan.h analyze.h cgen.h
+main.o: main.c globals.h util.h analyze.h cgen.h
 	$(CC) $(CFLAGS) -c main.c
 
 util.o: util.c util.h globals.h
@@ -32,12 +32,12 @@ code.o: code.c code.h globals.h
 cgen.o: cgen.c globals.h symtab.h code.h cgen.h
 	$(CC) $(CFLAGS) -c cgen.c
 
-lex.yy.o: cminus.l scan.h util.h globals.h
-	flex -o lex.yy.c cminus.l
+lex.yy.o: compiler.l util.h globals.h
+	flex -o lex.yy.c compiler.l
 	$(CC) $(CFLAGS) -c lex.yy.c
 
-y.tab.o: cminus.y globals.h
-	bison -d cminus.y --yacc
+y.tab.o: compiler.y globals.h
+	bison -d compiler.y --yacc
 	$(CC) $(CFLAGS) -c y.tab.c
 
 clean:

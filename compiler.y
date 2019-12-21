@@ -1,14 +1,18 @@
 
 %{
+#define YYPARSER /* distinguishes Yacc output from other code files */
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <math.h>
+#include "globals.h"
+#include "util.h"
+#include "scan.h"
+#include "parse.h"
 
+#define YYSTYPE TreeNode *
+static char * savedName; /* for use in assignments */
+static int savedNumber;
+static int savedLineNo;  /* ditto */
+static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
-void yyerror(char *s, ...);
-extern int yylineno;
 
 %}
 
@@ -17,7 +21,7 @@ extern int yylineno;
 %token LT LTEQ GT GTEQ EQ NEQ
 %token ASSIGN SEMI COMMA 
 %token LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE 
-%token NUM ID
+%token NUM ID ARRAY
 %token ERROR
 /* reserved words */
 %token ELSE IF INT RETURN VOID WHILE OUTPUT INPUT
@@ -302,7 +306,6 @@ arg_list    : arg_list COMMA exp
             ;
   
 %%
-
 int yyerror(char * message)
 { fprintf(listing,"Syntax error at line %d: %s\n",lineno,message);
   fprintf(listing,"Current token: ");

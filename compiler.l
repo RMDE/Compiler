@@ -1,9 +1,9 @@
 %{
-
-#include "compiler.tab.h"
-
-void yyerror(char *s, ...);
-
+#include "globals.h"
+#include "util.h"
+#include "scan.h"
+/* lexeme of identifier or reserved word */
+char tokenString[MAXTOKENLEN+1];
 %}
 
 
@@ -95,7 +95,20 @@ whitespace  [ \t]+
 
 %%
 
-int yywrap()
-{
-    return (1) ;
+TokenType getToken(void)
+{ static int firstTime = TRUE;
+  TokenType currentToken;
+  if (firstTime)
+  { firstTime = FALSE;
+    lineno++;
+    yyin = source;
+    yyout = listing;
+  }
+  currentToken = yylex();
+  strncpy(tokenString,yytext,MAXTOKENLEN);
+  if (TraceScan) {
+    fprintf(listing,"\t%d: ",lineno);
+    printToken(currentToken,tokenString);
+  }
+  return currentToken;
 }
