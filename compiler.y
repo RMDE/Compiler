@@ -106,7 +106,7 @@ param_list  : param_list COMMA param
                      $$ = $1; }
                      else $$ = $3; 
                  }
-            | param { $$ = $1; };
+            | param { $$ = $1; }
 param       : type_spec saveName
                  { $$ = newParamNode(NonArrParamK);
                    $$->child[0] = $1;
@@ -300,7 +300,7 @@ arg_list    : arg_list COMMA exp
                  }
             | exp { $$ = $1; }
             ;
-
+  
 %%
 
 int yyerror(char * message)
