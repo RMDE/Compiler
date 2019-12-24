@@ -61,12 +61,15 @@ void sc_push( Scope scope )
 
 Scope sc_create(char *funcName)
 { Scope newScope;
-
+  
   newScope = (Scope) malloc(sizeof(struct ScopeRec));
   newScope->funcName = funcName;
   newScope->nestedLevel = nScopeStack;
   newScope->parent = sc_top();
-
+  for(int i=0;i<SIZE;i++)
+  {
+    newScope->hashTable[i]=NULL;
+  }
   scopes[nScope++] = newScope;
 
   return newScope;
@@ -134,7 +137,7 @@ int st_lookup_top (char * name)
   return -1;
 }
 
-int st_add_lineno(char * name, int lineno)
+void st_add_lineno(char * name, int lineno)
 { BucketList l = st_bucket(name);
   LineList ll = l->lines;
   while (ll->next != NULL) ll = ll->next;
@@ -153,9 +156,7 @@ void printSymTabRows(BucketList *hashTable, FILE *listing) {
 
       while (l != NULL)
       { LineList t = l->lines;
-
         fprintf(listing,"%-14s ",l->name);
-
         switch (node->nodekind) {
         case DeclK:
           switch (node->kind.decl) {
