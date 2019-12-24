@@ -292,11 +292,26 @@ factor      : LPAREN exp RPAREN { $$ = $2; }
 call        : saveName {
                  $$ = newExpNode(CallK);
                  $$->attr.name = savedName;
+                 printf("%s\n", $$->attr.name);
               }
               LPAREN args RPAREN
                  { $$ = $2;
                    $$->child[0] = $4;
                  }
+            | INPUT {
+                 $$ = newExpNode(CallK);
+                 $$->attr.name = "input";
+              }
+              LPAREN RPAREN
+            | OUTPUT {
+                 $$ = newExpNode(CallK);
+                 $$->attr.name = "output";
+              }
+              LPAREN args RPAREN
+                  {
+                    $$ = $2;
+                    $$ -> child[0] = $4;
+                  }
             ;
 args        : arg_list { $$ = $1; }
             | /* empty */ { $$ = NULL; }
