@@ -39,8 +39,8 @@ FILE * code;
 /* allocate and set tracing flags */
 int EchoSource = TRUE;
 int TraceScan = FALSE;
-int TraceParse = FALSE;
-int TraceAnalyze = FALSE;
+int TraceParse = TRUE;
+int TraceAnalyze = TRUE;
 int TraceCode = TRUE;
 
 int Error = FALSE;
@@ -71,7 +71,7 @@ int main( int argc, char * argv[] )
     printTree(syntaxTree);
   }
 #if !NO_ANALYZE
-  if (! Error)
+  if (1)
   { if (TraceAnalyze) fprintf(listing,"\nBuilding Symbol Table...\n");
     buildSymtab(syntaxTree);
     if (TraceAnalyze) fprintf(listing,"\nChecking Types...\n");
