@@ -79,7 +79,6 @@ static void insertIOFunc(void)
   func->child[0] = typeSpec;
   func->child[1] = param;
   func->child[2] = compStmt;
-
   st_insert("output", -1, addLocation(), func);
 }
 
@@ -102,7 +101,8 @@ static void symbolError(TreeNode * t, char * message)
  * the symbol table
  */
 static void insertNode( TreeNode * t)
-{ switch (t->nodekind)
+{ 
+  switch (t->nodekind)
   { case StmtK:
       switch (t->kind.stmt)
       { case CompK:
@@ -113,6 +113,12 @@ static void insertNode( TreeNode * t)
             sc_push(scope);
           }
           t->attr.scope = sc_top();
+          break;
+        case IterK:
+          funcName="while";
+          break;
+        case IfK:
+          funcName="if";
           break;
         default:
           break;
