@@ -25,7 +25,7 @@
 #if !NO_ANALYZE
 #include "analyze.h"
 #if !NO_CODE
-#include "cgen.h"
+#include "midcode.c"
 #endif
 #endif
 #endif
@@ -90,7 +90,9 @@ int main( int argc, char * argv[] )
     { printf("Unable to open %s\n",codefile);
       exit(1);
     }
-    codeGen(syntaxTree,codefile);
+    // codeGen(syntaxTree,codefile);
+    fprintf(code,"hhhhh");
+    Create(syntaxTree);
     fclose(code);
   }
 #endif
