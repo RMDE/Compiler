@@ -2,5 +2,6 @@
 *.o
 *.tm
 *.cm
-*.tab.*
+*.tab.c
+*.tab.h
 setting.code-workspace
