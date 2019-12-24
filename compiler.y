@@ -31,6 +31,7 @@ static int yylex(void);
 %left MUL
 %right POW
 %nonassoc NEG
+%nonassoc UMINUS
 
 %% /* Grammar for TINY */
 program     : decl_list
@@ -275,6 +276,13 @@ term        : term TIMES factor
             ;
 factor      : LPAREN exp RPAREN { $$ = $2; }
             | var { $$ = $1; }
+            | MINUS var %prec UMINUS
+                  { $$ = newExpNode(OpK);
+                    $$->child[0] = newExpNode(ConstK);
+                    $$->child[0]->attr.val = 0;
+                    $$->child[1] = $2;
+                    $$->attr.op = MINUS;
+                  }
             | call { $$ = $1; }
             | NUM
                  { $$ = newExpNode(ConstK);
