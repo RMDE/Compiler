@@ -45,6 +45,24 @@ int TraceCode = TRUE;
 
 int Error = FALSE;
 
+
+void print(TreeNode *node)
+{
+  if(node)
+  {
+    printf("%d-",node->nodekind);
+
+    for(int i=0;i<MAXCHILDREN;i++)
+    {
+      print(node->child[i]);
+    }
+    print(node->sibling);
+  }
+  return;
+}
+
+
+
 int main( int argc, char * argv[] )
 { TreeNode * syntaxTree;
   char pgm[120]; /* source code file name */
@@ -86,12 +104,22 @@ int main( int argc, char * argv[] )
     strncpy(codefile,pgm,fnlen);
     strcat(codefile,".tm");
     code = fopen(codefile,"w");
+
+
+    print(syntaxTree);
+
+
     if (code == NULL)
     { printf("Unable to open %s\n",codefile);
       exit(1);
     }
     // codeGen(syntaxTree,codefile);
-    Create(syntaxTree);
+    if(!syntaxTree)
+    {
+        printf("The syntaxTree is null\n");
+        exit(1);
+    }
+    Create(syntaxTree,code);
     fclose(code);
   }
 #endif
