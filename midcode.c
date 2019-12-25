@@ -1,4 +1,6 @@
 #include "globals.h"
+#include "midcode.h"
+#include "symtab.h"
 
 typedef struct Midcode{
     int quad;
@@ -38,16 +40,15 @@ int memory(Midcode* code,int quad)
 
 int Build(TreeNode* node,Midcode* code,int quad)
 {
-    printf("build %d\n",quad);////////////////////
+    //printf("build %d\n",quad);////////////////////
+    printf("%d\n",node->nodekind);
     int n;
     switch(node->nodekind)
     {
         case ExpK:
-            printf("nodetype->ExpK\n");////////////////////
             switch(node->kind.exp)
             {
                 case AssignK:
-                    printf("kind.exp->AssignK\n");////////////////////////
                     quad=memory(code,quad);
                     strcpy(code->op,":=");
                     strcpy(code->var3.res,node->attr.name);

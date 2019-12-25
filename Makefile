@@ -9,7 +9,7 @@ CC = gcc
 
 CFLAGS = -Wall -g
 
-OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o code.o cgen.o
+OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o code.o cgen.o midcode.o
 
 compiler: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o compiler
@@ -25,6 +25,9 @@ symtab.o: symtab.c symtab.h
 
 analyze.o: analyze.c globals.h symtab.h analyze.h
 	$(CC) $(CFLAGS) -c analyze.c
+
+midcode.o:globals.h symtab.h midcode.h midcode.c
+	$(CC) $(CFLAGS) -c midcode.c
 
 code.o: code.c code.h globals.h
 	$(CC) $(CFLAGS) -c code.c
