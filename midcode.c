@@ -18,6 +18,7 @@ void show(Midcode* p)
 void assign(char* name,TreeNode* node)
 {
     printf("in assign    **");
+    printf("%d--",node->kind.exp);
     if(node->kind.exp==IdK)
     {
         printf("ID  %s\n",node->attr.name);///////
@@ -60,89 +61,109 @@ int Build(TreeNode* node,Midcode* code,int quad)
             switch(node->kind.exp)
             {
                 case AssignK:
-                    quad=memory(code,quad);
-                    strcpy(code->op,":=");
-                    strcpy(code->var3.res,node->child[0]->attr.name);
-                    strcpy(code->var2,"-");
-                    code->type=0;
                     if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                     {
+                        quad=memory(code,quad);
+                        strcpy(code->op,":=");
+                        strcpy(code->var3.res,node->child[0]->attr.name);
+                        strcpy(code->var2,"-");
+                        code->type=0;
                         assign(code->var1,node->child[1]);
                         show(code);////////
                     }
                     else
                     {
                         quad=Build(node->child[1],code,quad);
+                        quad=memory(code,quad);
+                        strcpy(code->op,":=");
+                        strcpy(code->var3.res,node->child[0]->attr.name);
+                        strcpy(code->var2,"-");
+                        code->type=0;
                         strcpy(code->var1,"T");
                     }
                     show(code);//////////
                     break;
                 case OpK:
-                    quad=memory(code,quad);
                     printf("opk\n");
                     switch(node->attr.op)
                     {
                         case PLUS:
-                            strcpy(code->var3.res,"T");
-                            strcpy(code->op,"+");
-                            assign(code->var1,node->child[0]);
-                            show(code);//////////
                             if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                             {
-                                assign(code->var1,node->child[1]);
+                                quad=memory(code,quad);
+                                strcpy(code->var3.res,"T");
+                                strcpy(code->op,"+");
+                                assign(code->var1,node->child[0]);
+                                assign(code->var2,node->child[1]);
                             }
                             else
                             {
                                 quad=Build(node->child[1],code,quad);
+                                quad=memory(code,quad);
+                                assign(code->var1,node->child[0]);
+                                strcpy(code->op,"+");
                                 strcpy(code->var2,"T");
+                                strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case MINUS:
-                            strcpy(code->var3.res,"T");
-                            strcpy(code->op,"-");
-                            assign(code->var1,node->child[0]);
-                            show(code);//////////
                             if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                             {
-                                assign(code->var1,node->child[1]);
+                                quad=memory(code,quad);
+                                strcpy(code->var3.res,"T");
+                                strcpy(code->op,"-");
+                                assign(code->var1,node->child[0]);
+                                assign(code->var2,node->child[1]);
                             }
                             else
                             {
                                 quad=Build(node->child[1],code,quad);
+                                quad=memory(code,quad);
+                                assign(code->var1,node->child[0]);
+                                strcpy(code->op,"-");
                                 strcpy(code->var2,"T");
+                                strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case TIMES:
-                            strcpy(code->var3.res,"T");
-                            strcpy(code->op,"*");
-                            assign(code->var1,node->child[0]);
-                            show(code);//////////
                             if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                             {
-                                assign(code->var1,node->child[1]);
+                                quad=memory(code,quad);
+                                strcpy(code->var3.res,"T");
+                                strcpy(code->op,"*");
+                                assign(code->var1,node->child[0]);
+                                assign(code->var2,node->child[1]);
                             }
                             else
                             {
                                 quad=Build(node->child[1],code,quad);
+                                quad=memory(code,quad);
+                                assign(code->var1,node->child[0]);
+                                strcpy(code->op,"*");
                                 strcpy(code->var2,"T");
+                                strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case OVER:
-                            strcpy(code->var3.res,"T");
-                            strcpy(code->op,"/");
-                            assign(code->var1,node->child[0]);
-                            show(code);//////////
                             if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                             {
-                                assign(code->var1,node->child[1]);
+                                quad=memory(code,quad);
+                                strcpy(code->var3.res,"T");
+                                strcpy(code->op,"/");
+                                assign(code->var1,node->child[0]);
+                                assign(code->var2,node->child[1]);
                             }
                             else
                             {
                                 quad=Build(node->child[1],code,quad);
+                                quad=memory(code,quad);
+                                assign(code->var1,node->child[0]);
+                                strcpy(code->op,"/");
                                 strcpy(code->var2,"T");
+                                strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
@@ -169,6 +190,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     switch(node->child[0]->kind.exp)
                     {
                         case OpK:
+                            quad=memory(code,quad);
                             switch(node->child[0]->attr.op)
                             {
                                 case LT:

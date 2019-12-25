@@ -10,9 +10,7 @@ void main(void)
 
 	i = 3;
 	j = 4;
-	a = i + j + 1;
-	b = i * j * 2;
+	a = i + j +5;
 	b = b;
-	c = b/a;
 
 }
