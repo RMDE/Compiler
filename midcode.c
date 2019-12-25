@@ -50,6 +50,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
     //printf("build %d\n",quad);////////////////////
     //printf("build %d\n",quad);
     int n;
+    Midcode *t;
     if(!node)
     {
         return quad;
@@ -64,6 +65,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
                     {
                         quad=memory(code,quad);
+                        code=code->next;
                         strcpy(code->op,":=");
                         strcpy(code->var3.res,node->child[0]->attr.name);
                         strcpy(code->var2,"-");
@@ -74,7 +76,9 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     else
                     {
                         quad=Build(node->child[1],code,quad);
+                        for(;code->next!=NULL;code=code->next);
                         quad=memory(code,quad);
+                        code=code->next;
                         strcpy(code->op,":=");
                         strcpy(code->var3.res,node->child[0]->attr.name);
                         strcpy(code->var2,"-");
@@ -88,9 +92,10 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     switch(node->attr.op)
                     {
                         case PLUS:
-                            if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
+                            if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
                             {
                                 quad=memory(code,quad);
+                                code=code->next;
                                 strcpy(code->var3.res,"T");
                                 strcpy(code->op,"+");
                                 assign(code->var1,node->child[0]);
@@ -98,19 +103,22 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             }
                             else
                             {
-                                quad=Build(node->child[1],code,quad);
+                                quad=Build(node->child[0],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                                 quad=memory(code,quad);
-                                assign(code->var1,node->child[0]);
+                                code=code->next;
+                                assign(code->var2,node->child[1]);
                                 strcpy(code->op,"+");
-                                strcpy(code->var2,"T");
+                                strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case MINUS:
-                            if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
+                            if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
                             {
                                 quad=memory(code,quad);
+                                code=code->next;
                                 strcpy(code->var3.res,"T");
                                 strcpy(code->op,"-");
                                 assign(code->var1,node->child[0]);
@@ -118,19 +126,22 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             }
                             else
                             {
-                                quad=Build(node->child[1],code,quad);
+                                quad=Build(node->child[0],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                                 quad=memory(code,quad);
-                                assign(code->var1,node->child[0]);
+                                code=code->next;
+                                assign(code->var2,node->child[1]);
                                 strcpy(code->op,"-");
-                                strcpy(code->var2,"T");
+                                strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case TIMES:
-                            if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
+                            if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
                             {
                                 quad=memory(code,quad);
+                                code=code->next;
                                 strcpy(code->var3.res,"T");
                                 strcpy(code->op,"*");
                                 assign(code->var1,node->child[0]);
@@ -138,19 +149,22 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             }
                             else
                             {
-                                quad=Build(node->child[1],code,quad);
+                                quad=Build(node->child[0],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                                 quad=memory(code,quad);
-                                assign(code->var1,node->child[0]);
+                                code=code->next;
+                                assign(code->var2,node->child[1]);
                                 strcpy(code->op,"*");
-                                strcpy(code->var2,"T");
+                                strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
                             break;
                         case OVER:
-                            if(node->child[1]->kind.exp==IdK||node->child[1]->kind.exp==ConstK)
+                            if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
                             {
                                 quad=memory(code,quad);
+                                code=code->next;
                                 strcpy(code->var3.res,"T");
                                 strcpy(code->op,"/");
                                 assign(code->var1,node->child[0]);
@@ -158,11 +172,13 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             }
                             else
                             {
-                                quad=Build(node->child[1],code,quad);
+                                quad=Build(node->child[0],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                                 quad=memory(code,quad);
-                                assign(code->var1,node->child[0]);
+                                code=code->next;
+                                assign(code->var2,node->child[1]);
                                 strcpy(code->op,"/");
-                                strcpy(code->var2,"T");
+                                strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
                             show(code);//////////
@@ -171,6 +187,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                             }
                             break;
                     }
@@ -179,6 +196,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     for(int i=0;i<MAXCHILDREN;i++)
                     {
                         quad=Build(node->child[i],code,quad);
+                        for(;code->next!=NULL;code=code->next);
                     }
                     break;   
             }
@@ -191,154 +209,179 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     {
                         case OpK:
                             quad=memory(code,quad);
+                            code=code->next;
                             switch(node->child[0]->attr.op)
                             {
                                 case LT:
                                     code->type=1;
                                     strcpy(code->op,"j<");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case LTEQ:
                                     code->type=1;
                                     strcpy(code->op,"j<=");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case GT:
                                     code->type=1;
                                     strcpy(code->op,"j>");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case GTEQ:
                                     code->type=1;
                                     strcpy(code->op,"j>=");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case EQ:
                                     code->type=1;
                                     strcpy(code->op,"je");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case NEQ:
                                     code->type=1;
                                     strcpy(code->op,"jne");
                                     code->var3.jump=quad+1;
-                                    assign(code->var1,node->child[0]);
-                                    assign(code->var2,node->child[1]);
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 default:
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
                                         quad=Build(node->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
                                     break;
                             }
                             break;
                         case IdK:
                             quad=memory(code,quad);
+                            code=code->next;
                             strcpy(code->op,"jnz");
-                            assign(code->var1,node);
+                            assign(code->var1,node->child[0]);
                             code->type=1;
                             strcpy(code->var2,"0");
                             code->var3.jump=quad+1;
                             show(code);//////////
                             quad=memory(code,quad);
+                            code=code->next;
                             code->type=1;
                             strcpy(code->op,"j");
                             strcpy(code->var1,"-");
                             strcpy(code->var2,"-");
                             show(code);//////////
+                            t=code;
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                             }
-                            code->var3.jump=quad;   
+                            t->var3.jump=quad;   
                             break;
                         default:
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                             }
                             break;
                     }
@@ -354,115 +397,147 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->type=1;
                                     strcpy(code->op,"j<");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case LTEQ:
                                     code->type=1;
                                     strcpy(code->op,"j<=");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case GT:
                                     code->type=1;
                                     strcpy(code->op,"j>");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case GTEQ:
                                     code->type=1;
                                     strcpy(code->op,"j>=");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case EQ:
                                     code->type=1;
                                     strcpy(code->op,"je");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     show(code);//////////
+                                    t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                                 case NEQ:
                                     code->type=1;
                                     strcpy(code->op,"jne");
                                     code->var3.jump=quad+1;
+                                    assign(code->var1,node->child[0]->child[0]);
+                                    assign(code->var2,node->child[0]->child[1]);
                                     show(code);//////////
                                     quad=memory(code,quad);
+                                    code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
+                                    t=code;
                                     show(code);//////////
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
-                                        quad=Build(node->child[i],code,quad);
+                                        quad=Build(node->child[1]->child[i],code,quad);
+                                        for(;code->next!=NULL;code=code->next);
                                     }
-                                    code->var3.jump=quad;
+                                    t->var3.jump=quad;
                                     break;
                             }
                             break;
                         case IdK:
                             quad=memory(code,quad);
+                            code=code->next;
                             strcpy(code->op,"jnz");
-                            assign(code->var1,node);
+                            assign(code->var1,node->child[0]);
                             code->type=1;
                             strcpy(code->var2,"0");
                             code->var3.jump=quad+1;
                             show(code);//////////
                             quad=memory(code,quad);
+                            code=code->next;
                             code->type=1;
                             strcpy(code->op,"j");
                             strcpy(code->var1,"-");
@@ -471,6 +546,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                             }
                             code->var3.jump=quad;   
                             break;
@@ -478,10 +554,12 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
+                                for(;code->next!=NULL;code=code->next);
                             }
                             break;
                     }
                     quad=memory(code,quad);
+                    code=code->next;
                     code->type=1;
                     strcpy(code->op,"j");
                     strcpy(code->var1,"-");
@@ -491,6 +569,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     break;
                 case RetK:
                     quad=memory(code,quad);
+                    code=code->next;
                     strcpy(code->op,"ret");
                     strcpy(code->var1,"-");
                     strcpy(code->var2,"-");
@@ -501,6 +580,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     for(int i=0;i<MAXCHILDREN;i++)
                     {
                         quad=Build(node->child[i],code,quad);
+                        for(;code->next!=NULL;code=code->next);
                     }
                     break;
             }
@@ -509,10 +589,12 @@ int Build(TreeNode* node,Midcode* code,int quad)
             for(int i=0;i<MAXCHILDREN;i++)
             {
                 quad=Build(node->child[i],code,quad);
+                for(;code->next!=NULL;code=code->next);
             }
             break;
     }
     quad=Build(node->sibling,code,quad);
+    for(;code->next!=NULL;code=code->next);
     return quad;
 }
 
@@ -520,12 +602,12 @@ int Build(TreeNode* node,Midcode* code,int quad)
 
 void Create(TreeNode* node,FILE* code)
 {
-    Midcode* head;
+    Midcode* head,*p;
     head=(Midcode*)malloc(sizeof(Midcode));
-    head->next=NULL;
-    Build(node,head,100);
-    Midcode *p;
-    p=head->next;
+    head->next=(Midcode*)malloc(sizeof(Midcode));
+    head->next->next=NULL;
+    Build(node,head->next,100);
+    p=head->next->next;
     while(p)
     {
         if(p->type==1)
