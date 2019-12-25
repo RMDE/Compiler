@@ -543,12 +543,13 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             strcpy(code->var1,"-");
                             strcpy(code->var2,"-");
                             show(code);//////////
+                            t=code;
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
                                 quad=Build(node->child[i],code,quad);
                                 for(;code->next!=NULL;code=code->next);
                             }
-                            code->var3.jump=quad;   
+                            t->var3.jump=quad;   
                             break;
                         default:
                             for(int i=0;i<MAXCHILDREN;i++)
@@ -612,13 +613,13 @@ void Create(TreeNode* node,FILE* code)
     {
         if(p->type==1)
         {
-            fprintf(code,"<%s,%s,%s,%d>",p->op,p->var1,p->var2,p->var3.jump);
-            printf("<%s,%s,%s,%d>",p->op,p->var1,p->var2,p->var3.jump);////////////////
+            fprintf(code,"%d:<%s,%s,%s,%d>\n",p->quad,p->op,p->var1,p->var2,p->var3.jump);
+            printf("%d:<%s,%s,%s,%d>\n",p->quad,p->op,p->var1,p->var2,p->var3.jump);////////////////
         }
         else
         {
-            fprintf(code,"<%s,%s,%s,%s>",p->op,p->var1,p->var2,p->var3.res);
-            printf("<%s,%s,%s,%s>",p->op,p->var1,p->var2,p->var3.res);////////////////
+            fprintf(code,"%d:<%s,%s,%s,%s>\n",p->quad,p->op,p->var1,p->var2,p->var3.res);
+            printf("%d:<%s,%s,%s,%s>\n",p->quad,p->op,p->var1,p->var2,p->var3.res);////////////////
         }
         p=p->next;
     }
