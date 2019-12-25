@@ -25,6 +25,7 @@ void assign(char* name,TreeNode* node)
 
 int memory(Midcode* code,int quad)
 {
+    printf("memory %d\n",quad);////////////////////
     Midcode* p=(Midcode*)malloc(sizeof(Midcode));
     p->next=NULL;
     code->next=p;
@@ -37,13 +38,16 @@ int memory(Midcode* code,int quad)
 
 int Build(TreeNode* node,Midcode* code,int quad)
 {
+    printf("build %d\n",quad);////////////////////
     int n;
     switch(node->nodekind)
     {
         case ExpK:
+            printf("nodetype->ExpK\n");////////////////////
             switch(node->kind.exp)
             {
                 case AssignK:
+                    printf("kind.exp->AssignK\n");////////////////////////
                     quad=memory(code,quad);
                     strcpy(code->op,":=");
                     strcpy(code->var3.res,node->attr.name);
@@ -206,7 +210,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             break;
                         case IdK:
                             quad=memory(code,quad);
-                            strcpy(code->type,"jnz");
+                            strcpy(code->op,"jnz");
                             assign(code->var1,node);
                             code->type=1;
                             strcpy(code->var2,"0");
@@ -343,6 +347,8 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             }
                             code->var3.jump=quad;   
                             break;
+                        default:
+                            break;
                     }
                     quad=memory(code,quad);
                     code->type=1;
@@ -384,10 +390,12 @@ void Create(TreeNode* node)
         if(p->type==1)
         {
             fprintf(code,"<%s,%s,%s,%d>",p->op,p->var1,p->var2,p->var3.jump);
+            printf("<%s,%s,%s,%d>",p->op,p->var1,p->var2,p->var3.jump);////////////////
         }
         else
         {
             fprintf(code,"<%s,%s,%s,%s>",p->op,p->var1,p->var2,p->var3.res);
+            printf("<%s,%s,%s,%s>",p->op,p->var1,p->var2,p->var3.res);////////////////
         }
         p=p->next;
     }

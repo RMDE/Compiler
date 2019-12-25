@@ -91,7 +91,6 @@ int main( int argc, char * argv[] )
       exit(1);
     }
     // codeGen(syntaxTree,codefile);
-    fprintf(code,"hhhhh");
     Create(syntaxTree);
     fclose(code);
   }
