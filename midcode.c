@@ -17,29 +17,29 @@ void show(Midcode* p)
 
 void assign(char* name,TreeNode* node)
 {
-    printf("in assign    **");
-    printf("%d--",node->kind.exp);
+    //printf("in assign    **");
+    //printf("%d--",node->kind.exp);
     if(node->kind.exp==IdK)
     {
-        printf("ID  %s\n",node->attr.name);///////
+        //printf("ID  %s\n",node->attr.name);///////
         strcpy(name,node->attr.name);
     }
     else if(node->kind.exp==ConstK)
     {
-        printf("num %d\n",node->attr.val);///////
+        //printf("num %d\n",node->attr.val);///////
         sprintf(name,"%d",node->attr.val);
     }
 }
 
 int memory(Midcode* code,int quad)
 {
-    printf("memory %d\n",quad);////////////////////
+    //printf("memory %d\n",quad);////////////////////
     Midcode* p=(Midcode*)malloc(sizeof(Midcode));
     p->next=NULL;
     code->next=p;
     code=p;
     code->type=0;
-    printf("quad:%d\n",quad);/////////
+    //printf("quad:%d\n",quad);/////////
     code->quad=quad;
     quad++;
     return quad;
@@ -55,7 +55,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
     {
         return quad;
     }
-    printf("%d\n",node->nodekind);
+    //printf("%d\n",node->nodekind);
     switch(node->nodekind)
     {
         case ExpK:
@@ -71,7 +71,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                         strcpy(code->var2,"-");
                         code->type=0;
                         assign(code->var1,node->child[1]);
-                        show(code);////////
+                        //show(code);////////
                     }
                     else
                     {
@@ -85,10 +85,10 @@ int Build(TreeNode* node,Midcode* code,int quad)
                         code->type=0;
                         strcpy(code->var1,"T");
                     }
-                    show(code);//////////
+                    //show(code);//////////
                     break;
                 case OpK:
-                    printf("opk\n");
+                    //printf("opk\n");
                     switch(node->attr.op)
                     {
                         case PLUS:
@@ -112,7 +112,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                 strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
-                            show(code);//////////
+                            //show(code);//////////
                             break;
                         case MINUS:
                             if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
@@ -135,7 +135,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                 strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
-                            show(code);//////////
+                            //show(code);//////////
                             break;
                         case TIMES:
                             if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
@@ -158,7 +158,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                 strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
-                            show(code);//////////
+                            //show(code);//////////
                             break;
                         case OVER:
                             if(node->child[0]->kind.exp==IdK||node->child[0]->kind.exp==ConstK)
@@ -181,7 +181,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                 strcpy(code->var1,"T");
                                 strcpy(code->var3.res,"T");
                             }
-                            show(code);//////////
+                            //show(code);//////////
                             break;
                         default:
                             for(int i=0;i<MAXCHILDREN;i++)
@@ -218,14 +218,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -240,14 +240,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -262,14 +262,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -284,14 +284,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -306,14 +306,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -328,14 +328,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -361,14 +361,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             code->type=1;
                             strcpy(code->var2,"0");
                             code->var3.jump=quad+1;
-                            show(code);//////////
+                            //show(code);//////////
                             quad=memory(code,quad);
                             code=code->next;
                             code->type=1;
                             strcpy(code->op,"j");
                             strcpy(code->var1,"-");
                             strcpy(code->var2,"-");
-                            show(code);//////////
+                            //show(code);//////////
                             t=code;
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
@@ -399,14 +399,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //how(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -421,14 +421,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -443,14 +443,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -465,14 +465,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -487,14 +487,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
                                     strcpy(code->op,"j");
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
-                                    show(code);//////////
+                                    //show(code);//////////
                                     t=code;
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
@@ -509,7 +509,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     code->var3.jump=quad+1;
                                     assign(code->var1,node->child[0]->child[0]);
                                     assign(code->var2,node->child[0]->child[1]);
-                                    show(code);//////////
+                                    //show(code);//////////
                                     quad=memory(code,quad);
                                     code=code->next;
                                     code->type=1;
@@ -517,7 +517,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                                     strcpy(code->var1,"-");
                                     strcpy(code->var2,"-");
                                     t=code;
-                                    show(code);//////////
+                                    //show(code);//////////
                                     for(int i=0;i<MAXCHILDREN;i++)
                                     {
                                         quad=Build(node->child[1]->child[i],code,quad);
@@ -535,14 +535,14 @@ int Build(TreeNode* node,Midcode* code,int quad)
                             code->type=1;
                             strcpy(code->var2,"0");
                             code->var3.jump=quad+1;
-                            show(code);//////////
+                            //show(code);//////////
                             quad=memory(code,quad);
                             code=code->next;
                             code->type=1;
                             strcpy(code->op,"j");
                             strcpy(code->var1,"-");
                             strcpy(code->var2,"-");
-                            show(code);//////////
+                            //show(code);//////////
                             t=code;
                             for(int i=0;i<MAXCHILDREN;i++)
                             {
@@ -566,7 +566,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     strcpy(code->var1,"-");
                     strcpy(code->var2,"-");
                     code->var3.jump=n;
-                    show(code);//////////
+                    //show(code);//////////
                     break;
                 case RetK:
                     quad=memory(code,quad);
@@ -575,7 +575,7 @@ int Build(TreeNode* node,Midcode* code,int quad)
                     strcpy(code->var1,"-");
                     strcpy(code->var2,"-");
                     strcpy(code->var3.res,"-");
-                    show(code);//////////
+                    //show(code);//////////
                     break;
                 default:
                     for(int i=0;i<MAXCHILDREN;i++)
@@ -614,12 +614,12 @@ void Create(TreeNode* node,FILE* code)
         if(p->type==1)
         {
             fprintf(code,"%d:<%s,%s,%s,%d>\n",p->quad,p->op,p->var1,p->var2,p->var3.jump);
-            printf("%d:<%s,%s,%s,%d>\n",p->quad,p->op,p->var1,p->var2,p->var3.jump);////////////////
+            //printf("%d:<%s,%s,%s,%d>\n",p->quad,p->op,p->var1,p->var2,p->var3.jump);////////////////
         }
         else
         {
             fprintf(code,"%d:<%s,%s,%s,%s>\n",p->quad,p->op,p->var1,p->var2,p->var3.res);
-            printf("%d:<%s,%s,%s,%s>\n",p->quad,p->op,p->var1,p->var2,p->var3.res);////////////////
+            //printf("%d:<%s,%s,%s,%s>\n",p->quad,p->op,p->var1,p->var2,p->var3.res);////////////////
         }
         p=p->next;
     }
