@@ -106,7 +106,7 @@ int main( int argc, char * argv[] )
     code = fopen(codefile,"w");
 
 
-    print(syntaxTree);
+    //print(syntaxTree);
 
 
     if (code == NULL)
