@@ -38,13 +38,13 @@ y.tab.o: compiler.y globals.h
 	$(CC) $(CFLAGS) -c y.tab.c
 
 clean:
-	-rm cminus
+	-rm compiler
 	-rm y.tab.c
 	-rm y.tab.h
 	-rm lex.yy.c
 	-rm $(OBJS)
 
-test: cminus
-	-./cminus test.cm
+test: compiler
+	-./compiler test.cm
 
-all: cminus
+all: compiler
